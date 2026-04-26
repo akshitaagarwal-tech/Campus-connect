@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#03040a;--bg2:#070b14;--bg3:#0c1220;
+  --cyan:#00e5ff;--purple:#7c3aed;--pink:#f472b6;--green:#22c55e;--amber:#f59e0b;
+  --cyan2:#00b4d8;--text:#e2e8f0;--text2:#94a3b8;--text3:#475569;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(0,229,255,0.08);
+  --border:rgba(255,255,255,0.08);--border2:rgba(0,229,255,0.2);
+  --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+  --glow:0 0 30px rgba(0,229,255,0.15);--glow2:0 0 60px rgba(124,58,237,0.2);
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden;line-height:1.6}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(3,4,10,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:700;cursor:pointer}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;box-shadow:var(--glow)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{display:flex;gap:.75rem;align-items:center}
+.btn-ghost{padding:.5rem 1.25rem;border:1px solid var(--border2);border-radius:8px;color:var(--cyan);background:transparent;font-family:var(--font);font-size:.875rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-ghost:hover{background:var(--glass2);box-shadow:var(--glow)}
+.btn-primary{padding:.5rem 1.25rem;border:none;border-radius:8px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-family:var(--font);font-size:.875rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:var(--glow)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 0 40px rgba(0,229,255,0.3)}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:6rem 2rem 4rem}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite}
+@keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(60px)}}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 8s ease-in-out infinite}
+.orb1{width:400px;height:400px;background:rgba(124,58,237,0.15);top:-100px;right:-100px;animation-delay:0s}
+.orb2{width:300px;height:300px;background:rgba(0,229,255,0.1);bottom:-50px;left:-50px;animation-delay:3s}
+.orb3{width:200px;height:200px;background:rgba(244,114,182,0.1);top:40%;left:20%;animation-delay:5s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.05)}}
+
+.hero-content{position:relative;z-index:1;text-align:center;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--glass2);border:1px solid var(--border2);border-radius:100px;padding:.4rem 1.2rem;font-size:.75rem;font-weight:600;color:var(--cyan);margin-bottom:2rem;letter-spacing:.05em;text-transform:uppercase}
+.badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+.hero h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem;letter-spacing:-.02em}
+.gradient-text{background:linear-gradient(135deg,var(--cyan) 0%,var(--purple) 50%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.2rem;color:var(--text2);max-width:600px;margin:0 auto 3rem;line-height:1.7}
+.hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-large{padding:.875rem 2.5rem;font-size:1rem;font-weight:700;border-radius:12px}
+.btn-large.btn-primary{box-shadow:0 0 50px rgba(0,229,255,0.25)}
+.btn-large.btn-ghost{font-family:var(--font)}
+
+/* ─── STATS BAR ─── */
+.stats-bar{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 2rem}
+.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+.stat-item{text-align:center}
+.stat-num{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:.8rem;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-top:.25rem}
+
+/* ─── SECTION ─── */
+section{padding:6rem 2rem}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-badge{display:inline-block;background:var(--glass2);border:1px solid var(--border2);border-radius:100px;padding:.3rem 1rem;font-size:.7rem;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem}
+.section-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.15;margin-bottom:1rem;letter-spacing:-.02em}
+.section-sub{font-size:1rem;color:var(--text2);max-width:550px;line-height:1.7}
+
+/* ─── FEATURES GRID ─── */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem}
+.feature-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
+.feature-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:var(--glow)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.25rem}
+.fi-cyan{background:rgba(0,229,255,0.1)}
+.fi-purple{background:rgba(124,58,237,0.1)}
+.fi-pink{background:rgba(244,114,182,0.1)}
+.fi-green{background:rgba(34,197,94,0.1)}
+.fi-amber{background:rgba(245,158,11,0.1)}
+.feature-title{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.feature-desc{font-size:.875rem;color:var(--text2);line-height:1.6}
+
+/* ─── DASHBOARD MOCKUP ─── */
+.dashboard-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.dashboard-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.dash-mockup{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:1.5rem;position:relative;overflow:hidden;box-shadow:var(--glow2)}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.dash-title{font-size:.875rem;font-weight:700;color:var(--cyan)}
+.dash-status{display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--green)}
+.live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.metric-box{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.metric-val{font-size:1.5rem;font-weight:700;margin-bottom:.2rem}
+.metric-lbl{font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.metric-chg{font-size:.7rem;color:var(--green);margin-top:.3rem}
+
+/* ─── LEADERBOARD ─── */
+.lb-row{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;background:var(--glass);border:1px solid var(--border);border-radius:10px;margin-bottom:.5rem;transition:all .2s;cursor:pointer}
+.lb-row:hover{border-color:var(--border2);background:var(--glass2)}
+.lb-rank{font-family:var(--mono);font-size:.75rem;font-weight:700;width:24px;text-align:center;color:var(--text3)}
+.lb-rank.top1{color:var(--amber)}
+.lb-rank.top2{color:var(--text2)}
+.lb-rank.top3{color:var(--amber);opacity:.7}
+.lb-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.lb-info{flex:1}
+.lb-name{font-size:.8rem;font-weight:600}
+.lb-college{font-size:.65rem;color:var(--text3)}
+.lb-score{font-family:var(--mono);font-size:.875rem;font-weight:700;color:var(--cyan)}
+.lb-badge{font-size:.6rem;padding:.2rem .5rem;border-radius:100px;background:rgba(0,229,255,0.1);color:var(--cyan);border:1px solid var(--border2)}
+
+/* ─── GAMIFICATION ─── */
+.gamif-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:4rem}
+.badge-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:2rem 1.5rem;text-align:center;transition:all .3s;cursor:pointer}
+.badge-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,229,255,0.15);border-color:var(--border2)}
+.badge-emoji{font-size:3rem;margin-bottom:1rem;display:block;filter:drop-shadow(0 0 20px rgba(0,229,255,0.4))}
+.badge-name{font-size:.875rem;font-weight:700;margin-bottom:.3rem}
+.badge-req{font-size:.75rem;color:var(--text3)}
+.badge-pts{font-size:.7rem;color:var(--cyan);font-family:var(--mono);margin-top:.5rem}
+
+/* ─── ANALYTICS ─── */
+.analytics-grid{display:grid;grid-template-columns:2fr 1fr;gap:2rem;margin-top:4rem}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;overflow:hidden}
+.chart-label{font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:1.5rem}
+.bar-chart{display:flex;align-items:flex-end;gap:.5rem;height:140px}
+.bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--cyan),var(--purple));position:relative;transition:all .3s;cursor:pointer;min-width:20px}
+.bar:hover{filter:brightness(1.2)}
+.bar::after{content:attr(data-lbl);position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:.55rem;color:var(--text3);white-space:nowrap;font-family:var(--mono)}
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:1rem}
+.hm-cell{aspect-ratio:1;border-radius:3px;background:var(--glass)}
+.hm-cell.l1{background:rgba(0,229,255,0.1)}
+.hm-cell.l2{background:rgba(0,229,255,0.25)}
+.hm-cell.l3{background:rgba(0,229,255,0.5)}
+.hm-cell.l4{background:rgba(0,229,255,0.8)}
+.hm-cell.l5{background:var(--cyan)}
+
+/* ─── CHATBOT ─── */
+#chatbot{position:fixed;bottom:1.5rem;right:1.5rem;z-index:200}
+.chat-bubble{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;cursor:pointer;font-size:1.5rem;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,229,255,0.4);transition:all .3s;position:relative}
+.chat-bubble:hover{transform:scale(1.1);box-shadow:0 12px 48px rgba(0,229,255,0.5)}
+.chat-notif{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:var(--pink);border-radius:50%;border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#fff;font-weight:700}
+.chat-panel{position:absolute;bottom:70px;right:0;width:360px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.5),var(--glow2);display:none;flex-direction:column;height:480px}
+.chat-panel.open{display:flex}
+.chat-head{background:linear-gradient(135deg,rgba(0,229,255,0.1),rgba(124,58,237,0.1));border-bottom:1px solid var(--border);padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.chat-name{font-size:.875rem;font-weight:700}
+.chat-status{font-size:.7rem;color:var(--green);display:flex;align-items:center;gap:.3rem}
+.chat-close{margin-left:auto;background:none;border:none;color:var(--text2);cursor:pointer;font-size:1.2rem;line-height:1}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+.msg{display:flex;gap:.5rem;animation:msgIn .3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.bot{align-self:flex-start}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;align-self:flex-end}
+.msg-bubble{max-width:240px;padding:.625rem 1rem;border-radius:16px;font-size:.8rem;line-height:1.5}
+.msg.bot .msg-bubble{background:var(--glass);border:1px solid var(--border);border-bottom-left-radius:4px;color:var(--text)}
+.msg.user .msg-bubble{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;border-bottom-right-radius:4px}
+.chat-input-area{padding:.875rem 1rem;border-top:1px solid var(--border);display:flex;gap:.5rem}
+.chat-input{flex:1;background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:.625rem 1rem;color:var(--text);font-family:var(--font);font-size:.8rem;outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--border2)}
+.chat-input::placeholder{color:var(--text3)}
+.chat-send{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;cursor:pointer;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.chat-send:hover{transform:scale(1.05);box-shadow:var(--glow)}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 1rem .75rem}
+.sugg-btn{padding:.3rem .75rem;background:var(--glass);border:1px solid var(--border);border-radius:100px;font-size:.7rem;color:var(--cyan);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.sugg-btn:hover{background:var(--glass2);border-color:var(--border2)}
+
+/* ─── NETWORK VIZ ─── */
+.network-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.network-canvas-wrap{border-radius:20px;overflow:hidden;border:1px solid var(--border);background:var(--bg3);position:relative;height:320px;margin-top:3rem}
+canvas#networkCanvas{width:100%;height:100%}
+.canvas-label{position:absolute;bottom:1rem;right:1rem;font-size:.7rem;color:var(--text3);font-family:var(--mono)}
+
+/* ─── ONBOARDING FLOW ─── */
+.flow-section{}
+.flow-steps{display:flex;align-items:flex-start;gap:0;margin-top:4rem;position:relative}
+.flow-steps::before{content:'';position:absolute;top:40px;left:40px;right:40px;height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));opacity:.3}
+.flow-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 1rem;position:relative}
+.step-circle{width:80px;height:80px;border-radius:50%;border:2px solid var(--border2);background:var(--glass2);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:1.5rem;position:relative;z-index:1;transition:all .3s;cursor:pointer}
+.step-circle:hover{border-color:var(--cyan);box-shadow:var(--glow);transform:scale(1.05)}
+.step-num{position:absolute;top:-4px;right:-4px;width:20px;height:20px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:50%;font-size:.6rem;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
+.step-title{font-size:.9rem;font-weight:700;margin-bottom:.5rem}
+.step-desc{font-size:.775rem;color:var(--text2);line-height:1.6}
+
+/* ─── FRAUD & AI INSIGHTS ─── */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:4rem}
+.ai-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative;overflow:hidden}
+.ai-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.ai-card-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem}
+.ai-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.ai-title{font-size:1rem;font-weight:700}
+.ai-sub{font-size:.75rem;color:var(--text3)}
+.alert-row{display:flex;align-items:center;gap.75rem;padding:.75rem 1rem;border-radius:10px;margin-bottom:.5rem;gap:.75rem;background:var(--glass);border:1px solid var(--border)}
+.alert-row.warn{border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05)}
+.alert-row.danger{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.05)}
+.alert-row.ok{border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.05)}
+.alert-icon{font-size:1rem;flex-shrink:0}
+.alert-text{font-size:.775rem;color:var(--text)}
+.alert-time{font-size:.65rem;color:var(--text3);margin-left:auto;font-family:var(--mono);white-space:nowrap}
+
+/* ─── PRICING ─── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem}
+.price-card{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:2.5rem 2rem;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured{border-color:var(--border2);background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(124,58,237,0.05));box-shadow:var(--glow2)}
+.price-card.featured::before{content:'Most Popular';position:absolute;top:0;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:.65rem;font-weight:700;padding:.35rem 1.25rem;border-radius:0 0 10px 10px;letter-spacing:.05em;text-transform:uppercase}
+.price-name{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:1rem}
+.price-val{font-size:2.5rem;font-weight:700;line-height:1;margin-bottom:.25rem}
+.price-period{font-size:.8rem;color:var(--text3)}
+.price-divider{height:1px;background:var(--border);margin:1.5rem 0}
+.price-feature{display:flex;align-items:center;gap:.75rem;font-size:.825rem;color:var(--text2);margin-bottom:.75rem}
+.price-feature::before{content:'✓';color:var(--cyan);font-weight:700;font-size:.875rem;flex-shrink:0}
+.price-btn{width:100%;margin-top:1.5rem;padding:.875rem;border-radius:10px;font-family:var(--font);font-size:.875rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.02em}
+.price-btn-outline{background:transparent;border:1px solid var(--border2);color:var(--cyan)}
+.price-btn-outline:hover{background:var(--glass2)}
+.price-btn-solid{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff}
+.price-btn-solid:hover{box-shadow:var(--glow);transform:translateY(-1px)}
+
+/* ─── CTA SECTION ─── */
+.cta-section{background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(124,58,237,0.05));border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:8rem 2rem}
+.cta-inner{max-width:700px;margin:0 auto}
+.cta-title{font-size:clamp(2rem,5vw,3.5rem);font-weight:700;line-height:1.15;margin-bottom:1.25rem;letter-spacing:-.02em}
+.cta-sub{font-size:1.1rem;color:var(--text2);margin-bottom:3rem;line-height:1.7}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ─── FOOTER ─── */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:4rem 2rem 2rem}
+.footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:4rem}
+.footer-brand p{font-size:.875rem;color:var(--text3);line-height:1.7;margin-top:.75rem;max-width:280px}
+.footer-col h4{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:1.25rem}
+.footer-col a{display:block;font-size:.8rem;color:var(--text3);text-decoration:none;margin-bottom:.625rem;transition:color .2s}
+.footer-col a:hover{color:var(--cyan)}
+.footer-bottom{max-width:1100px;margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.footer-bottom p{font-size:.75rem;color:var(--text3)}
+.footer-chips{display:flex;gap:.75rem}
+.chip{padding:.25rem .75rem;background:var(--glass);border:1px solid var(--border);border-radius:100px;font-size:.65rem;color:var(--text3)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes shimmer{from{background-position:-200% 0}to{background-position:200% 0}}
+.shimmer{background:linear-gradient(90deg,transparent 0%,rgba(0,229,255,0.1) 50%,transparent 100%);background-size:200% 100%;animation:shimmer 2s infinite}
+@keyframes countUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.count-animate{animation:countUp .6s ease forwards}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ─── TYPING ANIMATION ─── */
+.typing{display:flex;gap:4px;align-items:center;padding:.625rem 1rem;background:var(--glass);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;width:fit-content}
+.typing span{width:6px;height:6px;background:var(--text3);border-radius:50%;animation:typing .6s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .features-grid{grid-template-columns:1fr}
+  .dashboard-wrap{grid-template-columns:1fr}
+  .analytics-grid{grid-template-columns:1fr}
+  .gamif-grid{grid-template-columns:repeat(2,1fr)}
+  .ai-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .flow-steps{flex-direction:column;align-items:center}
+  .flow-steps::before{display:none}
+  nav .nav-links{display:none}
+}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">CC</div>
+    <span>CampusConnect</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#analytics">Analytics</a></li>
+    <li><a href="#gamification">Gamification</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-ghost" onclick="openChat()">Talk to AI</button>
+    <button class="btn-primary">Start Free Trial</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow-orb orb1"></div>
+    <div class="glow-orb orb2"></div>
+    <div class="glow-orb orb3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>AI-Powered Platform · Now in Beta</div>
+    <h1>The OS for Your<br><span class="gradient-text">Campus Ambassador</span><br>Program</h1>
+    <p>Stop managing ambassadors on spreadsheets. CampusConnect automates onboarding, tasks, scoring, and recognition — powered by AI that learns your program.</p>
+    <div class="hero-cta">
+      <button class="btn-primary btn-large">Launch Your Program →</button>
+      <button class="btn-ghost btn-large" onclick="openChat()">💬 Chat with AI</button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num" id="s1">0</div><div class="stat-label">Active Ambassadors</div></div>
+    <div class="stat-item"><div class="stat-num" id="s2">0</div><div class="stat-label">Campuses Connected</div></div>
+    <div class="stat-item"><div class="stat-num" id="s3">0</div><div class="stat-label">Tasks Completed</div></div>
+    <div class="stat-item"><div class="stat-num" id="s4">0%</div><div class="stat-label">Avg Engagement Lift</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-badge">Core Platform</div>
+      <h2 class="section-title">Everything your program<br><span class="gradient-text">needs to scale</span></h2>
+      <p class="section-sub">One platform to onboard ambassadors, assign tasks, track proof submissions, and surface insights — all automated.</p>
+    </div>
+    <div class="features-grid reveal" style="transition-delay:.1s">
+      <div class="feature-card">
+        <div class="feature-icon fi-cyan">🚀</div>
+        <div class="feature-title">Smart Onboarding</div>
+        <div class="feature-desc">AI-guided ambassador onboarding in under 5 minutes. Auto-verification, profile scoring, and college mapping built in.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-purple">📋</div>
+        <div class="feature-title">Task Assignment Engine</div>
+        <div class="feature-desc">Create, schedule, and auto-assign tasks by role, region, or skill. Deadline tracking and smart reminders via AI.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-pink">📸</div>
+        <div class="feature-title">Proof Submission & Auto-Score</div>
+        <div class="feature-desc">Ambassadors upload proof. AI validates screenshots, detects duplicates, and awards points — zero manual review.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-green">🏆</div>
+        <div class="feature-title">Live Leaderboards</div>
+        <div class="feature-desc">Real-time ranked leaderboards by college, region, or program. Ambassador-visible for healthy competition.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-amber">📊</div>
+        <div class="feature-title">ROI Analytics</div>
+        <div class="feature-desc">Track referrals, signups, social reach, and program ROI with board-ready dashboards and auto-generated reports.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-cyan">🤖</div>
+        <div class="feature-title">AI Fraud Detection</div>
+        <div class="feature-desc">Spot fake submissions, duplicate accounts, and gaming attempts in real time with behavioral anomaly detection.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="dashboard-section">
+  <div class="section-inner">
+    <div class="dashboard-wrap">
+      <div class="reveal">
+        <div class="section-badge">Live Dashboard</div>
+        <h2 class="section-title">Your command<br><span class="gradient-text">center</span></h2>
+        <p class="section-sub">Everything a program manager needs — real-time metrics, ambassador health, task completion rates, and AI recommendations in one view.</p>
+        <div style="margin-top:2rem;display:flex;flex-direction:column;gap:.75rem">
+          <div style="display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--text2)"><span style="color:var(--cyan);font-size:1rem">✦</span>Live sync across all campuses</div>
+          <div style="display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--text2)"><span style="color:var(--cyan);font-size:1rem">✦</span>AI surface top performers automatically</div>
+          <div style="display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--text2)"><span style="color:var(--cyan);font-size:1rem">✦</span>Exportable reports in one click</div>
+        </div>
+      </div>
+      <div class="dash-mockup reveal" style="transition-delay:.2s">
+        <div class="dash-header">
+          <div class="dash-title">Program Overview · April 2026</div>
+          <div class="dash-status"><span class="live-dot"></span>LIVE</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-box"><div class="metric-val" style="color:var(--cyan)">2,847</div><div class="metric-lbl">Ambassadors</div><div class="metric-chg">↑ 12.4%</div></div>
+          <div class="metric-box"><div class="metric-val" style="color:var(--purple)">94.3%</div><div class="metric-lbl">Task Rate</div><div class="metric-chg">↑ 8.1%</div></div>
+          <div class="metric-box"><div class="metric-val" style="color:var(--green)">₹4.2L</div><div class="metric-lbl">ROI Generated</div><div class="metric-chg">↑ 31%</div></div>
+        </div>
+        <!-- Leaderboard -->
+        <div style="font-size:.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">🏆 Top Ambassadors</div>
+        <div class="lb-row">
+          <div class="lb-rank top1">1</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">PR</div>
+          <div class="lb-info"><div class="lb-name">Priya Reddy</div><div class="lb-college">IIT Bombay</div></div>
+          <div class="lb-score">9,842</div>
+          <div class="lb-badge">🔥 On Fire</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank top2">2</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#7c3aed,#00e5ff)">AS</div>
+          <div class="lb-info"><div class="lb-name">Arjun Sharma</div><div class="lb-college">NIT Trichy</div></div>
+          <div class="lb-score">8,761</div>
+          <div class="lb-badge">⚡ Fast</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank top3">3</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#22c55e,#00e5ff)">NK</div>
+          <div class="lb-info"><div class="lb-name">Neha Kulkarni</div><div class="lb-college">BITS Pilani</div></div>
+          <div class="lb-score">8,104</div>
+          <div class="lb-badge">🌟 Rising</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ONBOARDING FLOW -->
+<section class="flow-section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <div class="section-badge">Workflow</div>
+      <h2 class="section-title">From signup to<br><span class="gradient-text">top performer</span></h2>
+    </div>
+    <div class="flow-steps reveal" style="transition-delay:.15s">
+      <div class="flow-step">
+        <div class="step-circle">📝<span class="step-num">1</span></div>
+        <div class="step-title">Apply & Onboard</div>
+        <div class="step-desc">AI-guided form. Verified in 60 seconds via smart checks.</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">📬<span class="step-num">2</span></div>
+        <div class="step-title">Get Tasks</div>
+        <div class="step-desc">Personalized challenges based on skills, location & performance.</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">📤<span class="step-num">3</span></div>
+        <div class="step-title">Submit Proof</div>
+        <div class="step-desc">Upload evidence. AI scores it instantly — no manual review.</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">🏅<span class="step-num">4</span></div>
+        <div class="step-title">Earn & Level Up</div>
+        <div class="step-desc">Accumulate XP, badges, streaks, and unlock real rewards.</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">📈<span class="step-num">5</span></div>
+        <div class="step-title">Grow Influence</div>
+        <div class="step-desc">Top performers get spotlighted, referred, and rewarded with PPO/internships.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMIFICATION -->
+<section id="gamification" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-badge">Gamification</div>
+      <h2 class="section-title">Recognition that<br><span class="gradient-text">drives results</span></h2>
+      <p class="section-sub">Badges, streaks, XP, and leaderboards turn program participation into an addictive, rewarding experience ambassadors actually want.</p>
+    </div>
+    <div class="gamif-grid reveal" style="transition-delay:.1s">
+      <div class="badge-card">
+        <span class="badge-emoji">🔥</span>
+        <div class="badge-name">Streak Master</div>
+        <div class="badge-req">7-day task streak</div>
+        <div class="badge-pts">+500 XP</div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-emoji">🌟</span>
+        <div class="badge-name">Campus Star</div>
+        <div class="badge-req">Top 3 in college</div>
+        <div class="badge-pts">+1,200 XP</div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-emoji">⚡</span>
+        <div class="badge-name">Speed Demon</div>
+        <div class="badge-req">Task in under 1hr</div>
+        <div class="badge-pts">+300 XP</div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-emoji">🤝</span>
+        <div class="badge-name">Referral King</div>
+        <div class="badge-req">10+ referrals</div>
+        <div class="badge-pts">+2,000 XP</div>
+      </div>
+    </div>
+    <div style="margin-top:3rem;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap" class="reveal" style="transition-delay:.2s">
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:.75rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Priya's Progress</div>
+        <div style="font-size:1.5rem;font-weight:700;color:var(--amber)">Level 7 · Ambassador Elite</div>
+        <div style="margin-top:1rem;background:rgba(255,255,255,0.05);border-radius:100px;height:8px;overflow:hidden"><div style="width:74%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:100px;transition:width .5s"></div></div>
+        <div style="font-size:.7rem;color:var(--text3);margin-top:.4rem;font-family:var(--mono)">7,420 / 10,000 XP to Level 8</div>
+      </div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-size:1.75rem">🏆</div><div style="font-size:.65rem;color:var(--text3)">Campus #1</div></div>
+        <div style="text-align:center"><div style="font-size:1.75rem">🔥</div><div style="font-size:.65rem;color:var(--text3)">14-day streak</div></div>
+        <div style="text-align:center"><div style="font-size:1.75rem">⚡</div><div style="font-size:.65rem;color:var(--text3)">12 badges</div></div>
+        <div style="text-align:center"><div style="font-size:1.75rem">🎁</div><div style="font-size:.65rem;color:var(--text3)">3 rewards</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYTICS -->
+<section id="analytics">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-badge">Analytics & ROI</div>
+      <h2 class="section-title">Data-driven<br><span class="gradient-text">decisions, always</span></h2>
+      <p class="section-sub">Track engagement trends, campus heatmaps, referral growth, and program ROI with predictive AI insights.</p>
+    </div>
+    <div class="analytics-grid reveal" style="transition-delay:.1s">
+      <div class="chart-card">
+        <div class="chart-label">Ambassador Engagement · Last 8 Weeks</div>
+        <div class="bar-chart" id="barChart">
+          <div class="bar" style="height:60%" data-lbl="Wk1"></div>
+          <div class="bar" style="height:72%" data-lbl="Wk2"></div>
+          <div class="bar" style="height:65%" data-lbl="Wk3"></div>
+          <div class="bar" style="height:80%" data-lbl="Wk4"></div>
+          <div class="bar" style="height:90%" data-lbl="Wk5"></div>
+          <div class="bar" style="height:85%" data-lbl="Wk6"></div>
+          <div class="bar" style="height:95%" data-lbl="Wk7"></div>
+          <div class="bar" style="height:100%" data-lbl="Wk8"></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-label">Campus Activity Heatmap</div>
+        <div class="heatmap" id="heatmap"></div>
+      </div>
+    </div>
+    <!-- AI insights -->
+    <div class="ai-grid reveal" style="transition-delay:.2s;margin-top:2rem">
+      <div class="ai-card">
+        <div class="ai-card-head">
+          <div class="ai-icon" style="background:rgba(0,229,255,0.1)">🔮</div>
+          <div><div class="ai-title">Predictive Insights</div><div class="ai-sub">AI-generated · Updated 2m ago</div></div>
+        </div>
+        <div class="alert-row ok"><span class="alert-icon">📈</span><span class="alert-text">IIT Bombay cluster shows +34% growth signal next month</span><span class="alert-time">AI</span></div>
+        <div class="alert-row warn"><span class="alert-icon">⚠️</span><span class="alert-text">Ambassador churn risk: 18 users showing disengagement pattern</span><span class="alert-time">AI</span></div>
+        <div class="alert-row ok"><span class="alert-icon">🎯</span><span class="alert-text">Referral campaign optimal launch window: 14–18 April</span><span class="alert-time">AI</span></div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-card-head">
+          <div class="ai-icon" style="background:rgba(239,68,68,0.1)">🛡️</div>
+          <div><div class="ai-title">Fraud Detection</div><div class="ai-sub">Real-time monitoring active</div></div>
+        </div>
+        <div class="alert-row danger"><span class="alert-icon">🚨</span><span class="alert-text">Duplicate proof detected: 3 accounts, same screenshot hash</span><span class="alert-time">2m ago</span></div>
+        <div class="alert-row warn"><span class="alert-icon">⚡</span><span class="alert-text">Unusual task velocity: user completed 40 tasks in 1 hour</span><span class="alert-time">14m ago</span></div>
+        <div class="alert-row ok"><span class="alert-icon">✅</span><span class="alert-text">Auto-quarantined 7 suspicious submissions this week</span><span class="alert-time">Today</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NETWORK VIZ -->
+<section class="network-section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="section-badge">Campus Network</div>
+      <h2 class="section-title">Watch your network<br><span class="gradient-text">come alive</span></h2>
+      <p class="section-sub">Real-time visualization of your ambassador network. See referral chains, campus clusters, and engagement flows live.</p>
+    </div>
+    <div class="network-canvas-wrap reveal" style="transition-delay:.15s">
+      <canvas id="networkCanvas"></canvas>
+      <div class="canvas-label">Live · 2,847 nodes · 8,312 connections</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <div class="section-badge">Pricing</div>
+      <h2 class="section-title">Simple pricing,<br><span class="gradient-text">powerful results</span></h2>
+      <p class="section-sub" style="margin:0 auto">Start free. Scale as your program grows.</p>
+    </div>
+    <div class="pricing-grid reveal" style="transition-delay:.1s">
+      <div class="price-card">
+        <div class="price-name">Starter</div>
+        <div class="price-val">Free</div>
+        <div class="price-period">Forever free</div>
+        <div class="price-divider"></div>
+        <div class="price-feature">Up to 50 ambassadors</div>
+        <div class="price-feature">Basic task management</div>
+        <div class="price-feature">Leaderboard access</div>
+        <div class="price-feature">Email support</div>
+        <button class="price-btn price-btn-outline">Get Started</button>
+      </div>
+      <div class="price-card featured">
+        <div style="margin-top:1.5rem"></div>
+        <div class="price-name">Growth</div>
+        <div class="price-val"><span class="gradient-text">₹4,999</span></div>
+        <div class="price-period">/month · billed annually</div>
+        <div class="price-divider"></div>
+        <div class="price-feature">Up to 500 ambassadors</div>
+        <div class="price-feature">AI auto-scoring & fraud detection</div>
+        <div class="price-feature">Advanced analytics & ROI</div>
+        <div class="price-feature">Campus heatmaps</div>
+        <div class="price-feature">AI chatbot assistant</div>
+        <div class="price-feature">Priority support</div>
+        <button class="price-btn price-btn-solid">Start 14-day Trial</button>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Enterprise</div>
+        <div class="price-val">Custom</div>
+        <div class="price-period">Contact sales</div>
+        <div class="price-divider"></div>
+        <div class="price-feature">Unlimited ambassadors</div>
+        <div class="price-feature">Custom integrations & SSO</div>
+        <div class="price-feature">White-label branding</div>
+        <div class="price-feature">Dedicated success manager</div>
+        <div class="price-feature">SLA & compliance</div>
+        <button class="price-btn price-btn-outline">Talk to Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="section-badge">Get Started</div>
+    <h2 class="cta-title">Your program deserves<br><span class="gradient-text">better infrastructure</span></h2>
+    <p class="cta-sub">Join 200+ organizations running ambassador programs on CampusConnect. Setup takes 10 minutes.</p>
+    <div class="cta-btns">
+      <button class="btn-primary btn-large">Launch Free →</button>
+      <button class="btn-ghost btn-large" onclick="openChat()">Talk to an AI advisor</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo"><div class="logo-icon">CC</div><span>CampusConnect</span></div>
+      <p>The AI-powered OS for campus ambassador programs. Built for startups and enterprises that want to scale without chaos.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#">Features</a><a href="#">Analytics</a><a href="#">Gamification</a><a href="#">API</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Press</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Docs</a><a href="#">Status</a><a href="#">Contact</a><a href="#">Privacy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CampusConnect. All rights reserved.</p>
+    <div class="footer-chips">
+      <span class="chip">SOC 2 Type II</span>
+      <span class="chip">GDPR Ready</span>
+      <span class="chip">99.9% Uptime</span>
+    </div>
+  </div>
+</footer>
+
+<!-- AI CHATBOT -->
+<div id="chatbot">
+  <button class="chat-bubble" onclick="openChat()" title="Chat with AI Assistant">
+    🤖
+    <div class="chat-notif">3</div>
+  </button>
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <div class="chat-avatar">🤖</div>
+      <div>
+        <div class="chat-name">Aria · CampusConnect AI</div>
+        <div class="chat-status"><span class="live-dot"></span>Online · Avg 2s response</div>
+      </div>
+      <button class="chat-close" onclick="closeChat()">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-bubble">Hi! I'm Aria, your CampusConnect AI. I can help with task guidance, performance insights, or setup recommendations. What do you need? 🚀</div>
+      </div>
+    </div>
+    <div class="chat-suggestions">
+      <button class="sugg-btn" onclick="sendSugg('How do I onboard ambassadors?')">How to onboard?</button>
+      <button class="sugg-btn" onclick="sendSugg('Show my top performers')">Top performers</button>
+      <button class="sugg-btn" onclick="sendSugg('Explain fraud detection')">Fraud detection</button>
+      <button class="sugg-btn" onclick="sendSugg('Best tasks for engagement?')">Best tasks?</button>
+    </div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="chatInput" placeholder="Ask Aria anything..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="chat-send" onclick="sendMsg()">↑</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── STATS COUNTER ───
+function animateCount(el, target, suffix='', duration=2000) {
+  const start = Date.now();
+  const step = () => {
+    const p = Math.min((Date.now()-start)/duration, 1);
+    const ease = 1-Math.pow(1-p, 3);
+    el.textContent = Math.round(ease*target).toLocaleString() + suffix;
+    if(p<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+setTimeout(()=>{
+  animateCount(document.getElementById('s1'), 2847);
+  animateCount(document.getElementById('s2'), 340);
+  animateCount(document.getElementById('s3'), 84200);
+  animateCount(document.getElementById('s4'), 340, '%');
+}, 300);
+
+// ─── HEATMAP ───
+const hm = document.getElementById('heatmap');
+const levels = ['','l1','l2','l3','l4','l5'];
+for(let i=0;i<49;i++){
+  const c=document.createElement('div');
+  c.className='hm-cell '+(levels[Math.floor(Math.random()*levels.length)]);
+  hm.appendChild(c);
+}
+setInterval(()=>{
+  const cells = hm.querySelectorAll('.hm-cell');
+  cells[Math.floor(Math.random()*cells.length)].className='hm-cell '+(levels[Math.floor(Math.random()*levels.length)]);
+},600);
+
+// ─── NETWORK CANVAS ───
+const canvas=document.getElementById('networkCanvas');
+const ctx=canvas.getContext('2d');
+let nodes=[],W,H;
+function resizeCanvas(){
+  W=canvas.width=canvas.offsetWidth;
+  H=canvas.height=canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize',()=>{resizeCanvas();initNodes()});
+function initNodes(){
+  nodes=[];
+  const n=Math.min(60, Math.floor(W/12));
+  for(let i=0;i<n;i++){
+    nodes.push({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+      r:Math.random()*3+1.5,
+      color:`hsla(${Math.random()*60+170},100%,60%,0.9)`,
+      pulse:Math.random()*Math.PI*2
+    });
+  }
+}
+initNodes();
+function drawNetwork(){
+  ctx.clearRect(0,0,W,H);
+  const maxDist=120;
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<maxDist){
+        const alpha=(1-d/maxDist)*0.3;
+        const grad=ctx.createLinearGradient(nodes[i].x,nodes[i].y,nodes[j].x,nodes[j].y);
+        grad.addColorStop(0,`rgba(0,229,255,${alpha})`);
+        grad.addColorStop(1,`rgba(124,58,237,${alpha})`);
+        ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
+        ctx.strokeStyle=grad;ctx.lineWidth=.5;ctx.stroke();
+      }
+    }
+  }
+  nodes.forEach((n,i)=>{
+    n.x+=n.vx; n.y+=n.vy; n.pulse+=.05;
+    if(n.x<0||n.x>W) n.vx*=-1;
+    if(n.y<0||n.y>H) n.vy*=-1;
+    const glowR = n.r*(1+.3*Math.sin(n.pulse));
+    const radGrad=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,glowR*3);
+    radGrad.addColorStop(0,n.color);
+    radGrad.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.arc(n.x,n.y,glowR*3,0,Math.PI*2);
+    ctx.fillStyle=radGrad;ctx.fill();
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=n.color;ctx.fill();
+  });
+  requestAnimationFrame(drawNetwork);
+}
+drawNetwork();
+
+// ─── CHATBOT ───
+let chatOpen=false;
+const responses={
+  'how do i onboard ambassadors':'To onboard ambassadors, go to **Program > Onboarding**. Set your eligibility criteria, upload the welcome kit, and share the smart link. AI handles verification automatically — most ambassadors are onboarded in under 5 minutes! 🚀',
+  'show my top performers':'Based on current data, your top 3 performers this week are: 🥇 Priya Reddy (IIT Bombay, 9,842 pts), 🥈 Arjun Sharma (NIT Trichy, 8,761 pts), 🥉 Neha Kulkarni (BITS Pilani, 8,104 pts). Want me to send them a recognition message?',
+  'explain fraud detection':'Our AI fraud detection monitors for: duplicate proof submissions (same image hash), unusual task velocity, coordinated account behavior, and location spoofing. Suspicious submissions are auto-quarantined and flagged for review. We caught 47 fraud attempts this month! 🛡️',
+  'best tasks for engagement':'High-engagement tasks typically include: social media posts with branded hashtags (avg 87% completion), event hosting (builds community), referral drives (viral coefficient 1.4x), and content creation challenges. Want me to generate a task calendar for next month?',
+  'default':'Great question! I can help with ambassador onboarding, task management, analytics insights, gamification strategy, and fraud detection. Try asking me about your current program performance or how to improve engagement! 📊'
+};
+function openChat(){
+  chatOpen=true;
+  document.getElementById('chatPanel').classList.add('open');
+  document.querySelector('.chat-notif').style.display='none';
+}
+function closeChat(){
+  chatOpen=false;
+  document.getElementById('chatPanel').classList.remove('open');
+}
+async function sendMsg(){
+  const inp=document.getElementById('chatInput');
+  const val=inp.value.trim();
+  if(!val) return;
+  inp.value='';
+  addMsg(val,'user');
+  const typing=addTyping();
+  const key=val.toLowerCase();
+  let resp=responses.default;
+  for(const k in responses){if(k!=='default'&&key.includes(k.split(' ')[0])){resp=responses[k];break}}
+  await sleep(800+Math.random()*600);
+  typing.remove();
+  addMsg(resp,'bot');
+}
+function sendSugg(text){
+  document.getElementById('chatInput').value=text;
+  sendMsg();
+}
+function addMsg(text,role){
+  const msgs=document.getElementById('chatMessages');
+  const wrap=document.createElement('div');
+  wrap.className=`msg ${role}`;
+  const avatar=document.createElement('div');
+  avatar.className='msg-avatar';
+  avatar.textContent=role==='bot'?'🤖':'👤';
+  const bubble=document.createElement('div');
+  bubble.className='msg-bubble';
+  bubble.textContent=text;
+  wrap.appendChild(avatar);
+  wrap.appendChild(bubble);
+  msgs.appendChild(wrap);
+  msgs.scrollTop=msgs.scrollHeight;
+  return wrap;
+}
+function addTyping(){
+  const msgs=document.getElementById('chatMessages');
+  const wrap=document.createElement('div');
+  wrap.className='msg bot';
+  const avatar=document.createElement('div');
+  avatar.className='msg-avatar';
+  avatar.textContent='🤖';
+  const typing=document.createElement('div');
+  typing.className='typing';
+  typing.innerHTML='<span></span><span></span><span></span>';
+  wrap.appendChild(avatar);wrap.appendChild(typing);
+  msgs.appendChild(wrap);
+  msgs.scrollTop=msgs.scrollHeight;
+  return wrap;
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+// ─── SCROLL REVEAL ───
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ─── BAR CHART HOVER ───
+document.querySelectorAll('.bar').forEach(bar=>{
+  bar.addEventListener('mouseenter',()=>{bar.style.filter='brightness(1.3)'});
+  bar.addEventListener('mouseleave',()=>{bar.style.filter=''});
+});
+</script>
+</body>
+</html>
