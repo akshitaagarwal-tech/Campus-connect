@@ -319,6 +319,12 @@ Inspired by:
 MIT
 
 ---
+<img width="1280" height="832" alt="Screenshot 2026-04-26 at 16 16 26" src="https://github.com/user-attachments/assets/a8c105a3-903e-42e1-8ec2-4082719829c2" />
+<img width="1280" height="832" alt="Screenshot 2026-04-26 at 16 16 32" src="https://github.com/user-attachments/assets/94892fc8-4f72-44e0-85ae-8474fa9a37d0" />
+<img width="1280" height="832" alt="Screenshot 2026-04-26 at 16 16 40" src="https://github.com/user-attachments/assets/18b32343-90d6-4c0b-b900-37df55dfba2a" />
+<img width="1280" height="832" alt="Screenshot 2026-04-26 at 16 16 51" src="https://github.com/user-attachments/assets/9b1e039f-9d68-4f96-9a34-e39e7d8b53b5" />
+<img width="1280" height="832" alt="Screenshot 2026-04-26 at 16 16 57" src="https://github.com/user-attachments/assets/ffdf8058-9a98-4508-ae03-a9876a84f041" />
+<img width="1280" height="832" alt="Screenshot 2026-04-26 at 16 17 04" src="https://github.com/user-attachments/assets/af428439-dc3b-49d9-87b0-5a3b21cacd0c" />
 
 ## ⭐ Final Pitch
 
